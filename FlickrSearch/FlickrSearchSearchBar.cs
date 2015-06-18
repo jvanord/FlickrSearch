@@ -3,9 +3,9 @@ using Xamarin.Forms;
 
 namespace FlickrSearch
 {
-	public class FlickrSearchAbsoluteLayout : AbsoluteLayout
+	public class FlickrSearchSearchBar : SearchBar
 	{
-		public FlickrSearchAbsoluteLayout ()
+		public FlickrSearchSearchBar ()
 		{
 		}
 
@@ -17,7 +17,7 @@ namespace FlickrSearch
 			if (width < 0) {
 				return base.OnSizeRequest (widthConstraint, heightConstraint);
 			} else {
-				SizeRequest result = new SizeRequest (new Size (width, height - 100));
+				SizeRequest result = new SizeRequest (new Size (width - 20, 40));
 				return result;
 			}
 		}

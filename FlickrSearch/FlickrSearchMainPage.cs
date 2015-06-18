@@ -26,24 +26,24 @@ namespace FlickrSearch
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 				Source = UriImageSource.FromUri (imageURI)
 			};
-			var searchBar = new SearchBar {
+			var searchBar = new FlickrSearchSearchBar {
 				Placeholder = "search term",
-				CancelButtonColor = Color.FromHex("d0d0d0"),
-				WidthRequest = 300
+				CancelButtonColor = Color.FromHex("d0d0d0")
 			};
 
 			var stack = new StackLayout {
 				VerticalOptions = LayoutOptions.Center,
 				HorizontalOptions = LayoutOptions.Center,
 				Orientation = StackOrientation.Horizontal,
-				Children = {backButton, imageView, forwardButton}
+				Children = {backButton, imageView, forwardButton},
+				BackgroundColor = Color.FromHex ("d8d8d8")
 			};
 
 			var absoluteLayout = new AbsoluteLayout {
 				//VerticalOptions = LayoutOptions.Center
 			};
-			absoluteLayout.Children.Add (searchBar, new Point (10, 30));
-			absoluteLayout.Children.Add (stack, new Point (5, 100));
+			absoluteLayout.Children.Add (searchBar, new Point (10, 20));
+			absoluteLayout.Children.Add (stack, new Point (5, 90));
 
 			Content = absoluteLayout;
 		}
