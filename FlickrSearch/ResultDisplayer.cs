@@ -22,10 +22,6 @@ namespace FlickrSearch
 			if (width < 0) {
 				return base.OnSizeRequest (widthConstraint, heightConstraint);
 			} else {
-//				var limit = width;
-//				if (width > height) {
-//					limit = height;
-//				}
 				var sizeRequest = new SizeRequest (new Size (width - 100, height - 100));
 				System.Diagnostics.Debug.WriteLine ("Setting image view size to: {0:f2} x {1:f2}", sizeRequest.Request.Width, sizeRequest.Request.Height);
 				return sizeRequest;

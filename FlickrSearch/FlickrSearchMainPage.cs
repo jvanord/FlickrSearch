@@ -16,27 +16,28 @@ namespace FlickrSearch
 				WidthRequest = 40,
 				HeightRequest = 40
 			};
+			backButton.Clicked += BackButton_Clicked;
 			var forwardButton = new Button {
 				Text = ">",
 				TextColor = Color.Aqua,
 				WidthRequest = 40,
 				HeightRequest = 40
 			};
+			forwardButton.Clicked += ForwardButton_Clicked;
 			var imageView = new ResultDisplayer {
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
-				Source = UriImageSource.FromUri (imageURI)
+				Source = ImageSource.FromUri (imageURI)
 			};
 			var searchBar = new FlickrSearchSearchBar {
 				Placeholder = "search term",
 				CancelButtonColor = Color.FromHex("d0d0d0")
 			};
-
+			searchBar.SearchButtonPressed += SearchBar_SearchButtonPressed;
 			var stack = new StackLayout {
 				VerticalOptions = LayoutOptions.Center,
 				HorizontalOptions = LayoutOptions.Center,
 				Orientation = StackOrientation.Horizontal,
-				Children = {backButton, imageView, forwardButton},
-				BackgroundColor = Color.FromHex ("d8d8d8")
+				Children = {backButton, imageView, forwardButton}
 			};
 
 			var absoluteLayout = new AbsoluteLayout {
@@ -46,6 +47,19 @@ namespace FlickrSearch
 			absoluteLayout.Children.Add (stack, new Point (5, 90));
 
 			Content = absoluteLayout;
+		}
+
+		void SearchBar_SearchButtonPressed (object sender, EventArgs e)
+		{
+			System.Diagnostics.Debug.WriteLine("search bar searches now...");
+		}
+
+		void ForwardButton_Clicked (object sender, EventArgs e) {
+			System.Diagnostics.Debug.WriteLine("next button touched");
+		}
+
+		void BackButton_Clicked (object sender, EventArgs e) {
+			System.Diagnostics.Debug.WriteLine("back button touched");
 		}
 	}
 }
