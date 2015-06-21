@@ -88,12 +88,30 @@ namespace FlickrSearch
 			this.ReloadImageView ();
 		}
 
-		static void ForwardButton_Clicked (object sender, EventArgs e) {
+		async void ForwardButton_Clicked (object sender, EventArgs e) {
 			System.Diagnostics.Debug.WriteLine("next button touched");
+			var imageInfo = dataSource.PhotoInfoAtIndex (dataSource.currentSelectedPhoto + 1);
+			if (imageInfo == null) {
+				backButton.IsEnabled = false;
+				forwardButton.IsEnabled = false;
+				return;
+			}
+			await loadImageWithInfo (imageInfo);
+			backButton.IsEnabled = dataSource.currentSelectedPhoto > 0;
+			forwardButton.IsEnabled = dataSource.currentSelectedPhoto < (dataSource.numberOfPhotos - 1);
 		}
 
-		static void BackButton_Clicked (object sender, EventArgs e) {
+		async void BackButton_Clicked (object sender, EventArgs e) {
 			System.Diagnostics.Debug.WriteLine("back button touched");
+			var imageInfo = dataSource.PhotoInfoAtIndex (dataSource.currentSelectedPhoto - 1);
+			if (imageInfo == null) {
+				backButton.IsEnabled = false;
+				forwardButton.IsEnabled = false;
+				return;
+			}
+			await loadImageWithInfo (imageInfo);
+			backButton.IsEnabled = dataSource.currentSelectedPhoto > 0;
+			forwardButton.IsEnabled = dataSource.currentSelectedPhoto < (dataSource.numberOfPhotos - 1);
 		}
 
 
