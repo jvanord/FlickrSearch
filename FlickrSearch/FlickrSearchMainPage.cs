@@ -64,16 +64,9 @@ namespace FlickrSearch
 			Content = absoluteLayout;
 		}
 
-		async public void ReloadImageView() {
-			var imageInfo = dataSource.PhotoInfoAtIndex (0);
-			if (imageInfo == null) {
-				backButton.IsEnabled = false;
-				forwardButton.IsEnabled = false;
-				return;
-			}
-			await loadImageWithInfo (imageInfo);
-			backButton.IsEnabled = dataSource.currentSelectedPhoto > 0;
-			forwardButton.IsEnabled = dataSource.currentSelectedPhoto < (dataSource.numberOfPhotos - 1);
+		public void ReloadImageView() {
+			loadImageAtIndex (0);
+			updateButtons ();
 		}
 
 		async void SearchBar_SearchButtonPressed (object sender, EventArgs e) {
@@ -88,35 +81,21 @@ namespace FlickrSearch
 			this.ReloadImageView ();
 		}
 
-		async void ForwardButton_Clicked (object sender, EventArgs e) {
+		void ForwardButton_Clicked (object sender, EventArgs e) {
 			System.Diagnostics.Debug.WriteLine("next button touched");
-			var imageInfo = dataSource.PhotoInfoAtIndex (dataSource.currentSelectedPhoto + 1);
-			if (imageInfo == null) {
-				backButton.IsEnabled = false;
-				forwardButton.IsEnabled = false;
-				return;
-			}
-			await loadImageWithInfo (imageInfo);
-			backButton.IsEnabled = dataSource.currentSelectedPhoto > 0;
-			forwardButton.IsEnabled = dataSource.currentSelectedPhoto < (dataSource.numberOfPhotos - 1);
+			loadImageAtIndex (dataSource.currentSelectedPhoto + 1);
+			updateButtons ();
 		}
 
-		async void BackButton_Clicked (object sender, EventArgs e) {
+		void BackButton_Clicked (object sender, EventArgs e) {
 			System.Diagnostics.Debug.WriteLine("back button touched");
-			var imageInfo = dataSource.PhotoInfoAtIndex (dataSource.currentSelectedPhoto - 1);
-			if (imageInfo == null) {
-				backButton.IsEnabled = false;
-				forwardButton.IsEnabled = false;
-				return;
-			}
-			await loadImageWithInfo (imageInfo);
-			backButton.IsEnabled = dataSource.currentSelectedPhoto > 0;
-			forwardButton.IsEnabled = dataSource.currentSelectedPhoto < (dataSource.numberOfPhotos - 1);
+			loadImageAtIndex (dataSource.currentSelectedPhoto - 1);
+			updateButtons ();
 		}
 
 
 		async Task loadImageWithInfo(PhotoInfo info) {
-			var uri = new Uri (String.Format ("https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=15765d6abdfa25d50bee0645b12591ff&photo_id={0}&format=json&nojsoncallback=1", info.id));
+			var uri = new Uri (String.Format ("https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=a7a0c39eac2e0a720c4d911b13a43197&photo_id={0}&format=json&nojsoncallback=1", info.id));
 			var client = new HttpClient ();
 			var json = await client.GetStringAsync (uri);
 			GlobalPhotoSizeInfo sizeInfo = JsonConvert.DeserializeObject<GlobalPhotoSizeInfo> (json);
@@ -125,6 +104,21 @@ namespace FlickrSearch
 				photoUriString = sizeInfo.sizes.UriStringForHighestAvailableResolution ();
 			}
 			imageView.Source = ImageSource.FromUri (new Uri (photoUriString));
+		}
+
+		async void loadImageAtIndex (int index) {
+			var imageInfo = dataSource.PhotoInfoAtIndex (index);
+			if (imageInfo == null) {
+				backButton.IsEnabled = false;
+				forwardButton.IsEnabled = false;
+				return;
+			}
+			await loadImageWithInfo (imageInfo);
+		}
+
+		void updateButtons () {
+			backButton.IsEnabled = dataSource.currentSelectedPhoto > 0;
+			forwardButton.IsEnabled = dataSource.currentSelectedPhoto < (dataSource.numberOfPhotos - 1);
 		}
 	}
 }
