@@ -99,7 +99,7 @@ namespace FlickrSearch
 			var client = new HttpClient ();
 			var json = await client.GetStringAsync (uri);
 			GlobalPhotoSizeInfo sizeInfo = JsonConvert.DeserializeObject<GlobalPhotoSizeInfo> (json);
-			var photoUriString = sizeInfo.sizes.UriStringForOriginal ();
+			var photoUriString = "";//sizeInfo.sizes.UriStringForOriginal ();
 			if (photoUriString.Length == 0) {
 				photoUriString = sizeInfo.sizes.UriStringForHighestAvailableResolution ();
 			}
